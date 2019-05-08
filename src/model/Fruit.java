@@ -12,6 +12,7 @@ public class Fruit implements GameObject{
 		Strawberry,
 		Banana,
 		Peach,
+		Apple,
 		Watermelon;
 	}
 	
@@ -38,10 +39,14 @@ public class Fruit implements GameObject{
 			filename = "banana.png";
 			break;
 		case 3:
+			fruitType = fruits.Apple;
+			filename = "apple.png";
+			break;
+		case 4:
 			fruitType = fruits.Peach;
 			filename = "peach.png";
 			break;
-		case 4:
+		case 5:
 			fruitType = fruits.Watermelon;
 			filename = "watermelon.png";
 			break;
@@ -53,9 +58,8 @@ public class Fruit implements GameObject{
 		
 		if(fruitType != null) {
 			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-			File file = new File(classLoader.getResource(filename).getFile());
 			try {
-				image = ImageIO.read(file);
+				image = ImageIO.read(classLoader.getResource(filename));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
