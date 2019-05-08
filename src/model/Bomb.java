@@ -1,73 +1,134 @@
 package model;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-public class Bomb implements GameObject {
+import javax.imageio.ImageIO;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
+public class Bomb implements GameObject{
+
+	private enum bombs{
+		Fatal,
+		Live;
+		}
+	
+	private bombs bombType;
+	
+	private int locX, locY, maxH, initialVel, fallingVel;
+	private boolean isSliced = false;
+	private BufferedImage image;
+	
+	public Bomb(int bombType) {
+		setObject(bombType);
+		locX = (int) (Math.random()* 750);
+		locY = 450;
+	}
+	
+	public void setObject(int type) {
+		String filename = null;
+		
+		switch(type) {
+		case 1:
+			bombType = bombs.Fatal;
+			filename = "fatal.png";
+			break;
+		case 2:
+			bombType = bombs.Live;
+			filename = "livebomb.png";
+			break;
+		default:
+			bombType = null;
+			break;
+		}
+		
+		
+		if(bombType != null) {
+			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+			try {
+				image = ImageIO.read(classLoader.getResource(filename));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 	@Override
-	public Enum getObject() {
-		// TODO Auto-generated method stub
-		return null;
+	public bombs getObject() {
+		return bombType;
 	}
 
 	@Override
 	public int getXlocation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return locX;
 	}
 
 	@Override
 	public int getYlocation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return locY;
 	}
 
 	@Override
 	public int getMaxHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return maxH;
 	}
 
 	@Override
 	public int getInitialVelocity() {
-		// TODO Auto-generated method stub
-		return 0;
+		return initialVel;
 	}
 
 	@Override
 	public int getFallingVelocity() {
-		// TODO Auto-generated method stub
-		return 0;
+		return fallingVel;
 	}
 
 	@Override
 	public boolean isSliced() {
-		// TODO Auto-generated method stub
-		return false;
+		return isSliced;
 	}
 
 	@Override
 	public boolean hasMovedOffScreen() {
-		// TODO Auto-generated method stub
-		return false;
+		return (locY>500);
 	}
 
 	@Override
 	public void slice() {
-		// TODO Auto-generated method stub
-		
+		isSliced = true;
 	}
 
 	@Override
 	public void move(double time) {
-		// TODO Auto-generated method stub
+		// TODO Implement the movement logic by changing the locations
+		// 		according to the time given as a parameter.
 		
 	}
 
 	@Override
 	public BufferedImage getBufferedImages() {
-		// TODO Auto-generated method stub
-		return null;
+		return image;
+	}
+
+	@Override
+	public void setYlocation(int Y) {
+		this.locY = Y;
+	}
+
+	@Override
+	public void setXlocation(int X) {
+		this.locX = X;
+	}
+
+	@Override
+	public void render(GraphicsContext gc) {
+	    Image image1 = SwingFXUtils.toFXImage(image, null);
+		gc.drawImage(image1, getXlocation(), getYlocation());
 	}
 
 }

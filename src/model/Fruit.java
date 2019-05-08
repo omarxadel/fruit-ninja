@@ -6,6 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
 public class Fruit implements GameObject{
 
 	private enum fruits{
@@ -18,12 +22,14 @@ public class Fruit implements GameObject{
 	
 	private fruits fruitType;
 	
-	private int locX, locY, maxH, initialVel, fallingVel;
+	private int locX, locY, maxH=400, initialVel, fallingVel;
 	private boolean isSliced = false;
 	private BufferedImage image;
 	
 	public Fruit(int fruitType) {
 		setObject(fruitType);
+		locX = (int) (Math.random()* 750);
+		locY = 450;
 	}
 	
 	public void setObject(int type) {
@@ -104,7 +110,7 @@ public class Fruit implements GameObject{
 
 	@Override
 	public boolean hasMovedOffScreen() {
-		return (locX>750);
+		return (locY>500);
 	}
 
 	@Override
@@ -122,6 +128,22 @@ public class Fruit implements GameObject{
 	@Override
 	public BufferedImage getBufferedImages() {
 		return image;
+	}
+
+	@Override
+	public void render(GraphicsContext gc) {
+	    Image image1 = SwingFXUtils.toFXImage(image, null);
+		gc.drawImage(image1, getXlocation(), getYlocation());
+	}
+
+	@Override
+	public void setYlocation(int Y) {
+		this.locY = Y;		
+	}
+
+	@Override
+	public void setXlocation(int X) {
+		this.locX = X;
 	}
 
 }
