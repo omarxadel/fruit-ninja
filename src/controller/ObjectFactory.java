@@ -1,5 +1,6 @@
 package controller;
 
+import model.Bomb;
 import model.Fruit;
 import model.GameObject;
 
@@ -27,7 +28,7 @@ public class ObjectFactory {
 	    	return new Fruit(5);
 	      }
 	      else if(object.equalsIgnoreCase("FATALBOMB")) {
-	    	  
+	    	return new Bomb(1);
 	      }
 	      else if(object.equalsIgnoreCase("LIVEBOMB")) {
 	    	  
