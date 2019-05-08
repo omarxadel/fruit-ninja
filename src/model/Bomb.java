@@ -6,6 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
 public class Bomb implements GameObject{
 
 	private enum bombs{
@@ -109,6 +113,22 @@ public class Bomb implements GameObject{
 	@Override
 	public BufferedImage getBufferedImages() {
 		return image;
+	}
+
+	@Override
+	public void setYlocation(int Y) {
+		this.locY = Y;
+	}
+
+	@Override
+	public void setXlocation(int X) {
+		this.locX = X;
+	}
+
+	@Override
+	public void render(GraphicsContext gc) {
+	    Image image1 = SwingFXUtils.toFXImage(image, null);
+		gc.drawImage(image1, getXlocation(), getYlocation());
 	}
 
 }
