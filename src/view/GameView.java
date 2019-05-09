@@ -64,15 +64,15 @@ public class GameView {
 		scene = new Scene(root, 750, 500);
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
-		showMenu();
+		
 		root.getChildren().addAll(backgroundView, canvas);
-		root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit);
+		//root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit);
+		play(750);
 		return scene; 
 
 	}
 	
 	private void initializeButtons() {
-		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		BufferedImage background = null;
 		BufferedImage homeMask = null;
@@ -128,6 +128,7 @@ public class GameView {
 		Quit.setLayoutX(530);
 		Quit.setLayoutY(270);
 		Quit.setBackground(null);
+
 	 }
 	private void hideMenu() {
 		// TODO Hide the menu buttons & images
@@ -213,6 +214,7 @@ public class GameView {
 			if(mouseIntersects(fruits.get(i))) {
 				fruits.remove(i);
 				scoreCount++;
+				System.out.println("INTERSECTS");
 			}
 			else if(fruits.get(i).hasMovedOffScreen()){
 				fruits.remove(i);
@@ -227,7 +229,7 @@ public class GameView {
 	}
 
 	private boolean mouseIntersects(GameObject gameObject) {
-		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseX, 1, 1);
+		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseX, 5, 5);
 		return (gameObject.getBoundaries().intersects(mouseBoundaries));
 	}
 	
