@@ -3,6 +3,7 @@ package view;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -24,6 +25,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -49,13 +52,15 @@ public class GameView {
 	private Button arcade = new Button();
 	private int scoreCount = 0;
 	private AnimationTimer aTimer;
+	private File af;
+	private Media mf;
+	private MediaPlayer mp;
 	private int livesCount = 3;
 	
 	public GameView() {
 		root = new Pane();
 		initializeButtons();
 	}
-	
 	
 	public Scene start() {
 		
@@ -94,6 +99,23 @@ public class GameView {
 		}
 		Image image = SwingFXUtils.toFXImage(background, null);
 		backgroundView = new ImageView(image);
+
+		canvas = new Canvas(750, 500);
+		gc = canvas.getGraphicsContext2D();
+		
+		File af=new File("C:\\Users\\zzz\\Desktop\\Fruit-Ninja-Theme-Song.mp3");
+		Media mf=new Media(af.toURI().toString());
+		MediaPlayer mp=new MediaPlayer(mf);
+		mp.setAutoPlay(true);
+		mp.setVolume(0.3);
+
+		
+		
+		root.getChildren().addAll(backgroundView, canvas);
+		showMenu();
+		return scene;
+	}
+
 		Image image1 = SwingFXUtils.toFXImage(homeMask, null);
 		maskView = new ImageView(image1);
 		maskView.setFitWidth(750);
@@ -128,6 +150,7 @@ public class GameView {
 		Quit.setBackground(null);
 
 	 }
+
 	private void hideMenu() {
 		// TODO Hide the menu buttons & images
 	}
