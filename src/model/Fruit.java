@@ -149,8 +149,9 @@ public class Fruit implements GameObject{
 
 	@Override
 	public Rectangle2D getBoundaries() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return new Rectangle2D(locX, locY, this.getBufferedImages().getWidth(), this.getBufferedImages().getHeight());
+
 	}
 
 }

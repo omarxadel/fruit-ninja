@@ -14,6 +14,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -50,19 +51,26 @@ public class GameView {
 	private AnimationTimer aTimer;
 	private int livesCount = 3;
 	
+	public GameView() {
+		root = new Pane();
+		initializeButtons();
+	}
+	
 	
 	public Scene start() {
-		root = new Pane();
+		
 		scene = new Scene(root, 750, 500);
-		initializeButtons();
-		showMenu();
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
-		root.getChildren().addAll(backgroundView, canvas,newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit);
+		showMenu();
+		root.getChildren().addAll(backgroundView, canvas);
+		root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit);
 		return scene; 
 
 	}
+	
 	private void initializeButtons() {
+		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		BufferedImage background = null;
 		BufferedImage homeMask = null;
@@ -217,7 +225,8 @@ public class GameView {
 	}
 
 	private boolean mouseIntersects(GameObject gameObject) {
-		return ((gameObject.getXlocation()<=mouseX  && (gameObject.getYlocation() <= mouseY)));
+		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseX, 1, 1);
+		return (gameObject.getBoundaries().intersects(mouseBoundaries));
 	}
 	
 	private void updateLabels() {
