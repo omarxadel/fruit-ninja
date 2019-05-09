@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -144,6 +145,12 @@ public class Fruit implements GameObject{
 	@Override
 	public void setXlocation(int X) {
 		this.locX = X;
+	}
+
+	@Override
+	public Rectangle2D getBoundaries() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

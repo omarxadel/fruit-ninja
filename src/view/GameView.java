@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.imageio.ImageIO;
-
 import controller.Context;
 import controller.GameController;
 import controller.Level1;
