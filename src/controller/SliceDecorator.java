@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import javax.imageio.ImageIO;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.File;
@@ -123,5 +124,10 @@ public class SliceDecorator extends ObjectDecorator {
 	public void render(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public Rectangle2D getBoundaries() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
