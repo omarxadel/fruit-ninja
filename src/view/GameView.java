@@ -244,7 +244,6 @@ public class GameView {
 	}
 
 	private boolean mouseIntersects(GameObject gameObject) {
-		
 		mouseX = controller.getMouseX();
 		mouseY = controller.getMouseY();
 		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseY, 5, 5);

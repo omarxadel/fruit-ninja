@@ -18,6 +18,10 @@ public class GameController {
 			mouseX = e.getX();
 			mouseY = e.getY();
 		});
+		scene.setOnMouseReleased(e->{
+			mouseX = 0;
+			mouseY = 0;
+		});
 	}
 	
 	public Context getContext() {
