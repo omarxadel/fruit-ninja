@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
+
+import controller.Command;
 import controller.Context;
 import controller.GameController;
 import controller.Level1;
@@ -16,6 +18,8 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -38,7 +42,7 @@ public class GameView {
 	private GameController controller = new GameController();
 	private Pane root;
 	private Scene scene;
-	private ImageView backgroundView,newGameView,maskView,logoView,ninjaView,deskView,arcadeGameview,quitGameView;
+	private ImageView backgroundView,newGameView,maskView,logoView,ninjaView,deskView,arcadeGameview,quitGameView,soundGameView;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private double mouseX, mouseY;
@@ -51,12 +55,14 @@ public class GameView {
 	private Button newGameB = new Button();
 	private Button Quit = new Button();
 	private Button arcade = new Button();
+	private Button sound = new Button();
 	private int scoreCount = 0;
 	private AnimationTimer aTimer;
 	private File af;
 	private Media mf;
 	private MediaPlayer mp;
 	private int livesCount = 3;
+	Command command;
 	
 	public GameView() {
 		root = new Pane();
@@ -68,10 +74,11 @@ public class GameView {
 		scene = new Scene(root, 750, 500);
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
-		
+		showMenu();
+		setButtonsActions();
 		root.getChildren().addAll(backgroundView, canvas);
-		//root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit);
-		play(750);
+		root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit,sound);
+
 		return scene; 
 
 	}
@@ -86,6 +93,7 @@ public class GameView {
 		BufferedImage newGame = null;
 		BufferedImage quitGame = null;
 		BufferedImage arcadeGame = null;
+		BufferedImage soundGame = null;
 		try {
 			background = ImageIO.read(classLoader.getResource("background.jpg"));
 			homeMask= ImageIO.read(classLoader.getResource("home-mask.png"));
@@ -95,6 +103,7 @@ public class GameView {
 			newGame = ImageIO.read(classLoader.getResource("new-game.png"));
 			quitGame = ImageIO.read(classLoader.getResource("quit.png"));
 			arcadeGame = ImageIO.read(classLoader.getResource("arcade.png"));
+			soundGame=ImageIO.read(classLoader.getResource("Sound-on-icon.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -142,6 +151,14 @@ public class GameView {
 		Quit.setLayoutX(530);
 		Quit.setLayoutY(270);
 		Quit.setBackground(null);
+		Image soundG = SwingFXUtils.toFXImage(soundGame, null);
+		soundGameView = new ImageView(soundG);
+		soundGameView.setFitWidth(40);
+		soundGameView.setFitHeight(40);
+		sound.setGraphic(soundGameView);
+		sound.setLayoutX(680);
+		sound.setLayoutY(30);
+		sound.setBackground(null);
 
 	 }
 
@@ -153,10 +170,22 @@ public class GameView {
 		newGameB.setVisible(true);
 		arcade.setVisible(true);
 		Quit.setVisible(true);
+		sound.setVisible(true);
 	}
 	
 	private void setButtonsActions() {
-		// TODO Set the actions for every button using the controller
+		Quit.setOnMouseDragged(e-> {
+				System.exit(0);
+		});
+		
+		sound.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+		
+			}
+			
+		});
 		
 	}
 
