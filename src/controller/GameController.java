@@ -8,7 +8,10 @@ public class GameController {
 	private Context context;
 	private double mouseX, mouseY;
 	
-	
+	public void clearMousePositions() {
+		mouseX = 0;
+		mouseY = 0;
+	}
 	
 	public void mouseListener(Scene scene) {
 		scene.setOnMouseDragged(e->{
