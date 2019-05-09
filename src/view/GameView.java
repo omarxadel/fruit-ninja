@@ -20,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,7 +35,7 @@ public class GameView {
 	private GameController controller = new GameController();
 	private Pane root;
 	private Scene scene;
-	private ImageView backgroundView;
+	private ImageView backgroundView,newGameView,maskView,logoView,ninjaView,deskView,arcadeGameview,quitGameView;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private double mouseX, mouseY;
@@ -44,6 +45,9 @@ public class GameView {
 	private Label score = new Label();
 	private Label timer = new Label();
 	private Label lives = new Label();
+	private Button newGameB = new Button();
+	private Button Quit = new Button();
+	private Button arcade = new Button();
 	private int scoreCount = 0;
 	private AnimationTimer aTimer;
 	private int livesCount = 3;
@@ -52,32 +56,84 @@ public class GameView {
 	public Scene start() {
 		root = new Pane();
 		scene = new Scene(root, 750, 500);
+		initializeButtons();
+		showMenu();
+		canvas = new Canvas(750, 500);
+		gc = canvas.getGraphicsContext2D();
+		root.getChildren().addAll(backgroundView, canvas,newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit);
+		return scene; 
+
+	}
+	private void initializeButtons() {
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		BufferedImage background = null;
+		BufferedImage homeMask = null;
+		BufferedImage homeDesk = null;
+		BufferedImage logo = null;
+		BufferedImage ninja = null;
+		BufferedImage newGame = null;
+		BufferedImage quitGame = null;
+		BufferedImage arcadeGame = null;
 		try {
 			background = ImageIO.read(classLoader.getResource("background.jpg"));
+			homeMask= ImageIO.read(classLoader.getResource("home-mask.png"));
+			logo= ImageIO.read(classLoader.getResource("logo.png"));
+			ninja= ImageIO.read(classLoader.getResource("ninja.png"));
+			homeDesk= ImageIO.read(classLoader.getResource("home-desc.png"));
+			newGame = ImageIO.read(classLoader.getResource("new-game.png"));
+			quitGame = ImageIO.read(classLoader.getResource("quit.png"));
+			arcadeGame = ImageIO.read(classLoader.getResource("arcade.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image image = SwingFXUtils.toFXImage(background, null);
 		backgroundView = new ImageView(image);
-		canvas = new Canvas(750, 500);
-		gc = canvas.getGraphicsContext2D();
-		root.getChildren().addAll(backgroundView, canvas);
-		play(750);
-		return scene;
-	}
-	
+		Image image1 = SwingFXUtils.toFXImage(homeMask, null);
+		maskView = new ImageView(image1);
+		maskView.setFitWidth(750);
+		Image image2 = SwingFXUtils.toFXImage(logo, null);
+		logoView = new ImageView(image2);
+		logoView.setLayoutX(30);
+		Image image3 = SwingFXUtils.toFXImage(ninja, null);
+		ninjaView = new ImageView(image3);
+		ninjaView.setLayoutX(350);
+		ninjaView.setLayoutY(30);
+		Image image4 = SwingFXUtils.toFXImage(homeDesk, null);
+		deskView = new ImageView(image4);
+		deskView.setLayoutX(30);
+		deskView.setLayoutY(180);
+		Image newG = SwingFXUtils.toFXImage(newGame, null);
+		newGameView = new ImageView(newG);
+		newGameB.setGraphic(newGameView);
+		newGameB.setLayoutX(20);
+		newGameB.setLayoutY(250);
+		newGameB.setBackground(null);
+		Image arcadeG = SwingFXUtils.toFXImage(arcadeGame, null);
+		arcadeGameview = new ImageView(arcadeG);
+		arcade.setGraphic(arcadeGameview);
+		arcade.setLayoutX(300);
+		arcade.setLayoutY(250);
+		arcade.setBackground(null);
+		Image quitG = SwingFXUtils.toFXImage(quitGame, null);
+		quitGameView = new ImageView(quitG);
+		Quit.setGraphic(quitGameView);
+		Quit.setLayoutX(530);
+		Quit.setLayoutY(270);
+		Quit.setBackground(null);
+	 }
 	private void hideMenu() {
 		// TODO Hide the menu buttons & images
 	}
 	
 	private void showMenu() {
-		// TODO Show the menu buttons & images
+		newGameB.setVisible(true);
+		arcade.setVisible(true);
+		Quit.setVisible(true);
 	}
 	
 	private void setButtonsActions() {
 		// TODO Set the actions for every button using the controller
+		
 	}
 
 	private void play(int speed) {
