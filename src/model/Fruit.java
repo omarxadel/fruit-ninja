@@ -28,7 +28,7 @@ public class Fruit implements GameObject{
 	
 	public Fruit(int fruitType) {
 		setObject(fruitType);
-		locX = (int) (Math.random()* 750);
+		locX = (int) (Math.random()* 650);
 		locY = 450;
 	}
 	
@@ -110,7 +110,7 @@ public class Fruit implements GameObject{
 
 	@Override
 	public boolean hasMovedOffScreen() {
-		return (locY>500);
+		return (locY == 10);
 	}
 
 	@Override

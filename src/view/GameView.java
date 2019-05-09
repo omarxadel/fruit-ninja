@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import controller.Context;
 import controller.GameController;
+import controller.Level1;
 import controller.ObjectFactory;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -29,6 +31,7 @@ import javafx.util.Duration;
 import model.GameObject;
 
 public class GameView {
+	private Context context;
 	private GameController controller = new GameController();
 	private Pane root;
 	private Scene scene;
@@ -88,6 +91,7 @@ public class GameView {
 		initializeButtons();
 		showMenu();
 		return scene; 
+
 	}
 	private void initializeButtons() {
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
@@ -144,26 +148,11 @@ public class GameView {
 		root.getChildren().add(score);
 		score.setLayoutX(10);
 		score.setLayoutY(10);
-		
+		context = new Context(new Level1());
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(speed), event -> {
-            for(int i = 0 ; i < 3 ; i++) {
-            	GameObject obj = null;
-            	
-            	int shows = (int) (Math.random()*4);
-            	switch(shows) {
-            	case 1 : 
-            		obj = apple();
-            		break;
-            	case 2 :
-            		obj = banana();
-            		break;
-            	}
-            	if(obj != null) {
-            		fruits.add(obj);
-            		obj.render(gc);
-            	}
-            		
-            }
+            GameObject object = context.createGameObject();
+			if(object != null)
+				fruits.add(object);
 		}));
 		timeline.setCycleCount(500);
 		timeline.play();
@@ -173,6 +162,7 @@ public class GameView {
 			@Override
 			public void handle(long arg0) {
 				gameUpdate();
+				controller.clearMousePositions();
 			}
 
 		
@@ -182,21 +172,7 @@ public class GameView {
 		
 		timer();
 		
-	}
-	
-	private GameObject apple() {
-		return object.getObject("Apple");
-	}
-	
-	private GameObject banana() {
-		return object.getObject("Banana");
-	}
-	
-	private GameObject bomb() {
-		return object.getObject("fatalbomb");
-	}
-
-	
+	}	
 	
 	private void timer() {
 		minutes = 0;
@@ -219,13 +195,28 @@ public class GameView {
 	}	
 	
 	private void gameUpdate() {
+		score.setText("Score: "+ scoreCount);
 		controller.mouseListener(scene);
 		mouseX = controller.getMouseX();
 		mouseY = controller.getMouseY();
 		gc.clearRect(0, 0, 750, 500);
 		for(int i = 0 ; i < fruits.size() ; i++) {
-			fruits.get(i).setYlocation(fruits.get(i).getYlocation() - speed - fruits.get(i).getYlocation()/150);
-			fruits.get(i).render(gc);	
+			if(mouseIntersects(fruits.get(i))) {
+				fruits.remove(i);
+				scoreCount++;
 			}
+			else if(fruits.get(i).hasMovedOffScreen()){
+				fruits.remove(i);
+			}
+			else {
+				fruits.get(i).setYlocation(fruits.get(i).getYlocation() - speed - fruits.get(i).getYlocation()/150);
+				fruits.get(i).render(gc);
+			}
+				
+		}
+	}
+
+	private boolean mouseIntersects(GameObject gameObject) {
+		return ((gameObject.getXlocation()<=mouseX  && (gameObject.getYlocation() <= mouseY)));
 	}
 }

@@ -25,7 +25,7 @@ public class Bomb implements GameObject{
 	
 	public Bomb(int bombType) {
 		setObject(bombType);
-		locX = (int) (Math.random()* 750);
+		locX = (int) (Math.random()* 650);
 		locY = 450;
 	}
 	
