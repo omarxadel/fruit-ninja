@@ -3,6 +3,9 @@ package controller;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import javax.imageio.ImageIO;
+
+import javafx.scene.canvas.GraphicsContext;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -62,6 +65,16 @@ public class SliceDecorator extends ObjectDecorator {
 		return 0;
 	}
 	@Override
+	public void setYlocation(int Y) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setXlocation(int X) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
 	public int getYlocation() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -106,6 +119,9 @@ public class SliceDecorator extends ObjectDecorator {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-
+	@Override
+	public void render(GraphicsContext gc) {
+		// TODO Auto-generated method stub
+		
+	}
 }
