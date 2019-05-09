@@ -2,6 +2,7 @@ package model;
 
 import java.awt.image.BufferedImage;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 
 public interface GameObject {
@@ -19,4 +20,5 @@ public interface GameObject {
 	public void move(double time);
 	public BufferedImage getBufferedImages();
 	public void render(GraphicsContext gc);
+	public Rectangle2D getBoundaries();
 }

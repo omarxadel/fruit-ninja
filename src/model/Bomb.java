@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -129,6 +130,11 @@ public class Bomb implements GameObject{
 	public void render(GraphicsContext gc) {
 	    Image image1 = SwingFXUtils.toFXImage(image, null);
 		gc.drawImage(image1, getXlocation(), getYlocation());
+	}
+
+	@Override
+	public Rectangle2D getBoundaries() {
+		return new Rectangle2D(locX, locY, this.getBufferedImages().getWidth(), this.getBufferedImages().getHeight());
 	}
 
 }
