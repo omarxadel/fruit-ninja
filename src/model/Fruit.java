@@ -111,7 +111,7 @@ public class Fruit implements GameObject{
 
 	@Override
 	public boolean hasMovedOffScreen() {
-		return (locY <= 0);
+		return (locY < 2);
 	}
 
 	@Override
@@ -149,9 +149,7 @@ public class Fruit implements GameObject{
 
 	@Override
 	public Rectangle2D getBoundaries() {
-
-		return new Rectangle2D(locX, locY, this.getBufferedImages().getWidth(), this.getBufferedImages().getHeight());
-
+		return new Rectangle2D(locX, locY, image.getWidth(), image.getHeight());
 	}
 
 }

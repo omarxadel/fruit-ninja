@@ -3,7 +3,9 @@ package view;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 
@@ -28,6 +30,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -44,7 +48,7 @@ public class GameView {
 	private double mouseX, mouseY;
 	private ObjectFactory object = new ObjectFactory();
 	private List<GameObject> fruits = new ArrayList();
-	private int speed = 4, minutes, seconds;
+	private int speed = 2, minutes, seconds;
 	private Label score = new Label();
 	private Label timer = new Label();
 	private Label lives = new Label();
@@ -54,6 +58,9 @@ public class GameView {
 	private Button sound = new Button();
 	private int scoreCount = 0;
 	private AnimationTimer aTimer;
+	private File af;
+	private Media mf;
+	private MediaPlayer mp;
 	private int livesCount = 3;
 	Command command;
 	
@@ -61,7 +68,6 @@ public class GameView {
 		root = new Pane();
 		initializeButtons();
 	}
-	
 	
 	public Scene start() {
 		
@@ -72,12 +78,12 @@ public class GameView {
 		setButtonsActions();
 		root.getChildren().addAll(backgroundView, canvas);
 		root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit,sound);
+
 		return scene; 
 
 	}
 	
 	private void initializeButtons() {
-		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		BufferedImage background = null;
 		BufferedImage homeMask = null;
@@ -103,6 +109,16 @@ public class GameView {
 		}
 		Image image = SwingFXUtils.toFXImage(background, null);
 		backgroundView = new ImageView(image);
+
+		canvas = new Canvas(750, 500);
+		gc = canvas.getGraphicsContext2D();
+		
+		/*File af=new File("C:\\Users\\zzz\\Desktop\\Fruit-Ninja-Theme-Song.mp3");
+		Media mf=new Media(af.toURI().toString());
+		MediaPlayer mp=new MediaPlayer(mf);
+		mp.setAutoPlay(true);
+		mp.setVolume(0.3);*/
+
 		Image image1 = SwingFXUtils.toFXImage(homeMask, null);
 		maskView = new ImageView(image1);
 		maskView.setFitWidth(750);
@@ -143,7 +159,9 @@ public class GameView {
 		sound.setLayoutX(680);
 		sound.setLayoutY(30);
 		sound.setBackground(null);
+
 	 }
+
 	private void hideMenu() {
 		// TODO Hide the menu buttons & images
 	}
@@ -229,32 +247,36 @@ public class GameView {
 	
 	private void gameUpdate() {
 		updateLabels();
-		controller.mouseListener(scene);
-		mouseX = controller.getMouseX();
-		mouseY = controller.getMouseY();
 		gc.clearRect(0, 0, 750, 500);
 		if(livesCount == 0) {
 			System.out.println("YOU LOST");
 		}
-		for(int i = 0 ; i < fruits.size() ; i++) {
-			if(mouseIntersects(fruits.get(i))) {
-				fruits.remove(i);
+		Iterator<GameObject> iterator = fruits.iterator();
+		while(iterator.hasNext()) {
+			controller.mouseListener(scene);
+			GameObject object = iterator.next();
+			if(mouseIntersects(object)) {
+				iterator.remove();
 				scoreCount++;
+				System.out.println("INTERSECTS");
 			}
-			else if(fruits.get(i).hasMovedOffScreen()){
-				fruits.remove(i);
+			else if(object.hasMovedOffScreen()){
+				iterator.remove();
 				livesCount--;
 			}
 			else {
-				fruits.get(i).setYlocation(fruits.get(i).getYlocation() - speed - fruits.get(i).getYlocation()/150);
-				fruits.get(i).render(gc);
+				object.setYlocation(object.getYlocation() - speed - object.getYlocation()/150);
+				object.render(gc);
 			}
 				
 		}
 	}
 
 	private boolean mouseIntersects(GameObject gameObject) {
-		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseX, 1, 1);
+		
+		mouseX = controller.getMouseX();
+		mouseY = controller.getMouseY();
+		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseY, 5, 5);
 		return (gameObject.getBoundaries().intersects(mouseBoundaries));
 	}
 	
