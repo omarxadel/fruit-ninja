@@ -110,7 +110,7 @@ public class Fruit implements GameObject{
 
 	@Override
 	public boolean hasMovedOffScreen() {
-		return (locY == 10);
+		return (locY <= 0);
 	}
 
 	@Override

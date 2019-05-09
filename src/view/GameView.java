@@ -43,8 +43,10 @@ public class GameView {
 	private int speed = 4, minutes, seconds;
 	private Label score = new Label();
 	private Label timer = new Label();
+	private Label lives = new Label();
 	private int scoreCount = 0;
 	private AnimationTimer aTimer;
+	private int livesCount = 3;
 	
 	
 	public Scene start() {
@@ -79,10 +81,13 @@ public class GameView {
 	}
 
 	private void play(int speed) {
+		lives.setText("Remaining Lives: "+ livesCount);
+		lives.setTextFill(Color.ANTIQUEWHITE);
+		lives.setFont(Font.font(18));
 		score.setText("Score: "+ scoreCount);
 		score.setTextFill(Color.ANTIQUEWHITE);
 		score.setFont(Font.font(18));
-		root.getChildren().add(score);
+		root.getChildren().addAll(score, lives);
 		score.setLayoutX(10);
 		score.setLayoutY(10);
 		context = new Context(new Level1());
@@ -132,11 +137,14 @@ public class GameView {
 	}	
 	
 	private void gameUpdate() {
-		score.setText("Score: "+ scoreCount);
+		updateLabels();
 		controller.mouseListener(scene);
 		mouseX = controller.getMouseX();
 		mouseY = controller.getMouseY();
 		gc.clearRect(0, 0, 750, 500);
+		if(livesCount == 0) {
+			System.out.println("YOU LOST");
+		}
 		for(int i = 0 ; i < fruits.size() ; i++) {
 			if(mouseIntersects(fruits.get(i))) {
 				fruits.remove(i);
@@ -144,6 +152,7 @@ public class GameView {
 			}
 			else if(fruits.get(i).hasMovedOffScreen()){
 				fruits.remove(i);
+				livesCount--;
 			}
 			else {
 				fruits.get(i).setYlocation(fruits.get(i).getYlocation() - speed - fruits.get(i).getYlocation()/150);
@@ -155,5 +164,10 @@ public class GameView {
 
 	private boolean mouseIntersects(GameObject gameObject) {
 		return ((gameObject.getXlocation()<=mouseX  && (gameObject.getYlocation() <= mouseY)));
+	}
+	
+	private void updateLabels() {
+		lives.setText("Remaining Lives: "+livesCount);
+		score.setText("Score: "+ scoreCount);
 	}
 }
