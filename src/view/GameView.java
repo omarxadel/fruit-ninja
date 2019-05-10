@@ -38,24 +38,21 @@ import javafx.util.Duration;
 import model.GameObject;
 
 public class GameView {
+	private MainMenu main = new MainMenu();
 	private Context context;
 	private GameController controller = new GameController();
 	private Pane root;
 	private Scene scene;
-	private ImageView backgroundView,newGameView,maskView,logoView,ninjaView,deskView,arcadeGameview,quitGameView,soundGameView;
 	private Canvas canvas;
 	private GraphicsContext gc;
+	private ImageView backgroundView;
 	private double mouseX, mouseY;
-	private ObjectFactory object = new ObjectFactory();
 	private List<GameObject> fruits = new ArrayList();
 	private int speed = 2, minutes, seconds;
 	private Label score = new Label();
 	private Label timer = new Label();
 	private Label lives = new Label();
-	private Button newGameB = new Button();
-	private Button Quit = new Button();
-	private Button arcade = new Button();
-	private Button sound = new Button();
+
 	private int scoreCount = 0;
 	private AnimationTimer aTimer;
 	private File af;
@@ -64,129 +61,29 @@ public class GameView {
 	private int livesCount = 3;
 	Command command;
 	
-	public GameView() {
-		root = new Pane();
-		initializeButtons();
-	}
-	
 	public Scene start() {
-		
-		scene = new Scene(root, 750, 500);
-		canvas = new Canvas(750, 500);
-		gc = canvas.getGraphicsContext2D();
-		showMenu();
-		setButtonsActions();
-		root.getChildren().addAll(backgroundView, canvas);
-		root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit,sound);
-
-		return scene; 
-
-	}
-	
-	private void initializeButtons() {
-		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		BufferedImage background = null;
-		BufferedImage homeMask = null;
-		BufferedImage homeDesk = null;
-		BufferedImage logo = null;
-		BufferedImage ninja = null;
-		BufferedImage newGame = null;
-		BufferedImage quitGame = null;
-		BufferedImage arcadeGame = null;
-		BufferedImage soundGame = null;
+		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		try {
-			background = ImageIO.read(classLoader.getResource("background.jpg"));
-			homeMask= ImageIO.read(classLoader.getResource("home-mask.png"));
-			logo= ImageIO.read(classLoader.getResource("logo.png"));
-			ninja= ImageIO.read(classLoader.getResource("ninja.png"));
-			homeDesk= ImageIO.read(classLoader.getResource("home-desc.png"));
-			newGame = ImageIO.read(classLoader.getResource("new-game.png"));
-			quitGame = ImageIO.read(classLoader.getResource("quit.png"));
-			arcadeGame = ImageIO.read(classLoader.getResource("arcade.png"));
-			soundGame=ImageIO.read(classLoader.getResource("Sound-on-icon.png"));
-		} catch (IOException e) {
+			 background = ImageIO.read(classLoader.getResource("background.jpg"));
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 		Image image = SwingFXUtils.toFXImage(background, null);
 		backgroundView = new ImageView(image);
-
+		
+		root = new Pane();
+		scene = new Scene(root, 750, 500);
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
 		
-		/*File af=new File("C:\\Users\\zzz\\Desktop\\Fruit-Ninja-Theme-Song.mp3");
-		Media mf=new Media(af.toURI().toString());
-		MediaPlayer mp=new MediaPlayer(mf);
-		mp.setAutoPlay(true);
-		mp.setVolume(0.3);*/
-
-		Image image1 = SwingFXUtils.toFXImage(homeMask, null);
-		maskView = new ImageView(image1);
-		maskView.setFitWidth(750);
-		Image image2 = SwingFXUtils.toFXImage(logo, null);
-		logoView = new ImageView(image2);
-		logoView.setLayoutX(30);
-		Image image3 = SwingFXUtils.toFXImage(ninja, null);
-		ninjaView = new ImageView(image3);
-		ninjaView.setLayoutX(350);
-		ninjaView.setLayoutY(30);
-		Image image4 = SwingFXUtils.toFXImage(homeDesk, null);
-		deskView = new ImageView(image4);
-		deskView.setLayoutX(30);
-		deskView.setLayoutY(180);
-		Image newG = SwingFXUtils.toFXImage(newGame, null);
-		newGameView = new ImageView(newG);
-		newGameB.setGraphic(newGameView);
-		newGameB.setLayoutX(20);
-		newGameB.setLayoutY(250);
-		newGameB.setBackground(null);
-		Image arcadeG = SwingFXUtils.toFXImage(arcadeGame, null);
-		arcadeGameview = new ImageView(arcadeG);
-		arcade.setGraphic(arcadeGameview);
-		arcade.setLayoutX(300);
-		arcade.setLayoutY(250);
-		arcade.setBackground(null);
-		Image quitG = SwingFXUtils.toFXImage(quitGame, null);
-		quitGameView = new ImageView(quitG);
-		Quit.setGraphic(quitGameView);
-		Quit.setLayoutX(530);
-		Quit.setLayoutY(270);
-		Quit.setBackground(null);
-		Image soundG = SwingFXUtils.toFXImage(soundGame, null);
-		soundGameView = new ImageView(soundG);
-		soundGameView.setFitWidth(40);
-		soundGameView.setFitHeight(40);
-		sound.setGraphic(soundGameView);
-		sound.setLayoutX(680);
-		sound.setLayoutY(30);
-		sound.setBackground(null);
-
-	 }
-
-	private void hideMenu() {
-		// TODO Hide the menu buttons & images
-	}
-	
-	private void showMenu() {
-		newGameB.setVisible(true);
-		arcade.setVisible(true);
-		Quit.setVisible(true);
-		sound.setVisible(true);
-	}
-	
-	private void setButtonsActions() {
-		Quit.setOnMouseDragged(e-> {
-				System.exit(0);
-		});
+		play(750);
 		
-		sound.setOnAction(new EventHandler<ActionEvent>() {
+		root.getChildren().addAll(backgroundView, canvas);
+		
+		return scene; 
 
-			@Override
-			public void handle(ActionEvent event) {
-		
-			}
-			
-		});
-		
 	}
 
 	private void play(int speed) {
@@ -249,7 +146,7 @@ public class GameView {
 		updateLabels();
 		gc.clearRect(0, 0, 750, 500);
 		if(livesCount == 0) {
-			System.out.println("YOU LOST");
+			// TODO lose game
 		}
 		Iterator<GameObject> iterator = fruits.iterator();
 		while(iterator.hasNext()) {
@@ -258,14 +155,13 @@ public class GameView {
 			if(mouseIntersects(object)) {
 				iterator.remove();
 				scoreCount++;
-				System.out.println("INTERSECTS");
 			}
 			else if(object.hasMovedOffScreen()){
 				iterator.remove();
 				livesCount--;
 			}
 			else {
-				object.setYlocation(object.getYlocation() - speed - object.getYlocation()/150);
+				object.move(speed);
 				object.render(gc);
 			}
 				

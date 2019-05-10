@@ -23,7 +23,10 @@ public class Fruit implements GameObject{
 	
 	private fruits fruitType;
 	
-	private int locX, locY, maxH=400, initialVel, fallingVel;
+	private int locX, locY;
+	private final int maxH = 450;
+	private final int initialVel = 8;
+	private final int fallingVel = 10;
 	private boolean isSliced = false;
 	private BufferedImage image;
 	
@@ -121,9 +124,12 @@ public class Fruit implements GameObject{
 
 	@Override
 	public void move(double time) {
-		// TODO Implement the movement logic by changing the locations
-		// 		according to the time given as a parameter.
 		
+			locY-=(time*initialVel);
+		
+		/*else {
+			locY+=(time*fallingVel);
+		}*/
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import model.GameObject;
 public class SliceDecorator extends ObjectDecorator {
 	
 	
-	BufferedImage [] images= new BufferedImage[10];
+	private BufferedImage [] images= new BufferedImage[10];
 	
 	public SliceDecorator(GameObject FruitDecorator) {
 		super(FruitDecorator);
