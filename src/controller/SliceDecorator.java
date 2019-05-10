@@ -16,7 +16,7 @@ import model.GameObject;
 public class SliceDecorator extends ObjectDecorator {
 	
 	
-	BufferedImage [] images= new BufferedImage[10];
+	private BufferedImage [] images= new BufferedImage[10];
 	
 	public SliceDecorator(GameObject FruitDecorator) {
 		super(FruitDecorator);
@@ -24,7 +24,7 @@ public class SliceDecorator extends ObjectDecorator {
 	}
 	 public GameObject getSlice(String object) throws IOException {
 		
-		 if (object==null)
+		 if (object==null) 
 			 return null;
 		 if (object.equalsIgnoreCase("STRAWBERRY")) {
 			 images [0]=ImageIO.read(new File ("strawberry-1.png"));
