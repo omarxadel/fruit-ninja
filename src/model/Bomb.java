@@ -19,10 +19,15 @@ public class Bomb implements GameObject{
 		}
 	
 	private bombs bombType;
-	
-	private int locX, locY, maxH, initialVel, fallingVel;
+	private int holder = 100000;
+	private int locX, locY;
+	private final int maxH = 120;
+	private final double initialVel = 2.7;
+	private final double fallingVel = 1.5;
 	private boolean isSliced = false;
 	private BufferedImage image;
+
+	private boolean falling = false;
 	
 	public Bomb(int bombType) {
 		setObject(bombType);
@@ -81,12 +86,12 @@ public class Bomb implements GameObject{
 
 	@Override
 	public int getInitialVelocity() {
-		return initialVel;
+		return (int) initialVel;
 	}
 
 	@Override
 	public int getFallingVelocity() {
-		return fallingVel;
+		return (int) fallingVel;
 	}
 
 	@Override
@@ -106,9 +111,13 @@ public class Bomb implements GameObject{
 
 	@Override
 	public void move(double time) {
-		// TODO Implement the movement logic by changing the locations
-		// 		according to the time given as a parameter.
-		
+		if(locY > maxH && !falling) {
+			locY-=(time*initialVel);
+		}
+		else {
+			falling = true;
+			locY+=(time*fallingVel);
+		}
 	}
 
 	@Override
@@ -136,5 +145,6 @@ public class Bomb implements GameObject{
 	public Rectangle2D getBoundaries() {
 		return new Rectangle2D(locX, locY, this.getBufferedImages().getWidth(), this.getBufferedImages().getHeight());
 	}
+
 
 }

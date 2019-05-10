@@ -22,11 +22,12 @@ public class Fruit implements GameObject{
 	}
 	
 	private fruits fruitType;
-	
+	private boolean falling = false;
 	private int locX, locY;
-	private final int maxH = 450;
-	private final int initialVel = 8;
-	private final int fallingVel = 10;
+	private int holder = 100000;
+	private final int maxH = 120;
+	private final double initialVel = 2.7;
+	private final double fallingVel = 2;
 	private boolean isSliced = false;
 	private BufferedImage image;
 	
@@ -99,12 +100,12 @@ public class Fruit implements GameObject{
 
 	@Override
 	public int getInitialVelocity() {
-		return initialVel;
+		return (int) initialVel;
 	}
 
 	@Override
 	public int getFallingVelocity() {
-		return fallingVel;
+		return (int) fallingVel;
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class Fruit implements GameObject{
 
 	@Override
 	public boolean hasMovedOffScreen() {
-		return (locY < 2);
+		return (locY > 500);
 	}
 
 	@Override
@@ -124,12 +125,13 @@ public class Fruit implements GameObject{
 
 	@Override
 	public void move(double time) {
-		
+		if(locY > maxH && !falling) {
 			locY-=(time*initialVel);
-		
-		/*else {
+		}
+		else {
+			falling = true;
 			locY+=(time*fallingVel);
-		}*/
+		}
 	}
 
 	@Override
