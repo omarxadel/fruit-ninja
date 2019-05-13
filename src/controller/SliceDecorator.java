@@ -24,7 +24,7 @@ public class SliceDecorator extends ObjectDecorator {
 	}
 	 public GameObject getSlice(String object) throws IOException {
 		
-		 if (object==null) 
+		 if (object==null)
 			 return null;
 		 if (object.equalsIgnoreCase("STRAWBERRY")) {
 			 images [0]=ImageIO.read(new File ("strawberry-1.png"));

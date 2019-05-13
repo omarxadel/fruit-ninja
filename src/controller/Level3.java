@@ -40,4 +40,10 @@ public class Level3  implements GameActions{
 		
 	}
 
+	@Override
+	public int getPhaseObjects() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

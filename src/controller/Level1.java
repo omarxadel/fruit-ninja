@@ -5,6 +5,8 @@ import model.GameObject;
 
 public class Level1 implements GameActions{
 	private ObjectFactory factory = new ObjectFactory();
+	private final int phaseObject = 2;
+	private final int timeline = 1000;
 
 	@Override
 	public GameObject createGameObject() {     	
@@ -20,10 +22,11 @@ public class Level1 implements GameActions{
         		return factory.getObject("WATERMELON");
         	case 5 : 
         		return factory.getObject("PEACH");
-        	case 6 :
+        	case 6:
         		return factory.getObject("FATALBOMB");
+        	default:
+        		return null;
         	}
-		return null;
 	}
 
 	@Override
@@ -34,8 +37,7 @@ public class Level1 implements GameActions{
 
 	@Override
 	public void sliceObjects() {
-		// TODO Auto-generated method stub
-		
+		// TODO Nothing
 	}
 
 	@Override
@@ -54,6 +56,15 @@ public class Level1 implements GameActions{
 	public void ResetGame() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getPhaseObjects() {
+		return phaseObject;
+	}
+
+	public int getTimeline() {
+		return timeline;
 	}
 
 

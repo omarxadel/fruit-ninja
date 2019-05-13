@@ -41,4 +41,10 @@ public class ArcadeMode implements GameActions {
 		
 	}
 
+	@Override
+	public int getPhaseObjects() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

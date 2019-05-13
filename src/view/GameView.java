@@ -40,7 +40,6 @@ import model.GameObject;
 
 public class GameView {
 	private MainMenu main = new MainMenu();
-	private Context context;
 	private GameController controller = new GameController();
 	private Pane root;
 	private Scene scene;
@@ -49,18 +48,21 @@ public class GameView {
 	private ImageView backgroundView;
 	private double mouseX, mouseY;
 	private List<GameObject> fruits = new ArrayList();
+	private List<GameObject> bombs = new ArrayList();
+	private List<GameObject> slices = new ArrayList();
 	private int speed = 2, minutes, seconds;
 	private Label score = new Label();
 	private Label timer = new Label();
 	private Label lives = new Label();
-
-	private int scoreCount = 0;
+	
 	private AnimationTimer aTimer;
 	private File af;
 	private Media mf;
 	private MediaPlayer mp;
-	private int livesCount = 3;
+	
 	Command command;
+	
+	
 	
 	public Scene start() {
 		BufferedImage background = null;
@@ -81,26 +83,30 @@ public class GameView {
 		
 		root.getChildren().addAll(backgroundView, canvas);
 		
-		play(750);
+		play(1000);
 		
 		return scene;
 	}
 
 	private void play(int speed) {
-		lives.setText("Remaining Lives: "+ livesCount);
+		controller.newGame(new Context(new Level1()));
+		lives.setText("Remaining Lives: "+ controller.getLivesCount());
 		lives.setTextFill(Color.ANTIQUEWHITE);
 		lives.setFont(Font.font(18));
-		score.setText("Score: "+ scoreCount);
+		score.setText("Score: "+ controller.getScoreCount());
 		score.setTextFill(Color.ANTIQUEWHITE);
 		score.setFont(Font.font(18));
 		root.getChildren().addAll(score, lives);
 		score.setLayoutX(10);
 		score.setLayoutY(10);
-		context = new Context(new Level1());
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(speed), event -> {
-            GameObject object = context.createGameObject();
-			if(object != null)
-				fruits.add(object);
+            for(int objects=0; objects < controller.getContext().getPhaseObjects();objects++) {
+				GameObject object = controller.createGameObject();
+				if(object instanceof Fruit && object != null)
+					fruits.add(object);
+				else if(object != null)
+					bombs.add(object);
+            }
 		}));
 		timeline.setCycleCount(500);
 		timeline.play();
@@ -110,7 +116,6 @@ public class GameView {
 			@Override
 			public void handle(long arg0) {
 				gameUpdate();
-				controller.clearMousePositions();
 			}
 
 		
@@ -145,38 +150,18 @@ public class GameView {
 	private void gameUpdate() {
 		updateLabels();
 		gc.clearRect(0, 0, 750, 500);
-		if(livesCount == 0) {
+		if(controller.getLivesCount() == 0) {
 			// TODO lose game
 		}
-		Iterator<GameObject> iterator = fruits.iterator();
-		while(iterator.hasNext()) {
-			controller.mouseListener(scene);
-			GameObject object = iterator.next();
-			if(mouseIntersects(object)) {
-				iterator.remove();
-				scoreCount++;
-			}
-			else if(object.hasMovedOffScreen()){
-					iterator.remove();
-					livesCount--;
-			}
-			else {
-				object.move(3);
-				object.render(gc);
-			}
-				
-		}
+		controller.controlGameObjects(fruits, bombs, slices , scene, gc);
 	}
 
-	private boolean mouseIntersects(GameObject gameObject) {
-		mouseX = controller.getMouseX();
-		mouseY = controller.getMouseY();
-		Rectangle2D mouseBoundaries = new Rectangle2D(mouseX, mouseY, 5, 5);
-		return (gameObject.getBoundaries().intersects(mouseBoundaries));
-	}
+	
+
 	
 	private void updateLabels() {
-		lives.setText("Remaining Lives: "+livesCount);
-		score.setText("Score: "+ scoreCount);
+		lives.setText("Remaining Lives: "+controller.getLivesCount());
+		score.setText("Score: "+ controller.getScoreCount());
 	}
+
 }

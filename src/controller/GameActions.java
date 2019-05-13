@@ -9,4 +9,5 @@ public interface GameActions {
 	public void saveGame ();
 	public void loadGame ();
 	public void ResetGame ();
+	public int getPhaseObjects ();
 }
