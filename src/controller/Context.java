@@ -2,7 +2,7 @@ package controller;
 
 import model.GameObject;
 
-public class Context {
+public class Context implements GameActions{
 	GameActions gameActions;
 
 	public Context(GameActions gameActions) {
@@ -26,5 +26,10 @@ public class Context {
 	}
 	public void ResetGame () {
 		
+	}
+
+	@Override
+	public int getPhaseObjects() {
+		return gameActions.getPhaseObjects();
 	}
 	}
