@@ -35,6 +35,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import model.Fruit;
 import model.GameObject;
 
 public class GameView {
@@ -78,12 +79,11 @@ public class GameView {
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
 		
-		play(750);
-		
 		root.getChildren().addAll(backgroundView, canvas);
 		
-		return scene; 
-
+		play(750);
+		
+		return scene;
 	}
 
 	private void play(int speed) {
@@ -157,11 +157,11 @@ public class GameView {
 				scoreCount++;
 			}
 			else if(object.hasMovedOffScreen()){
-				iterator.remove();
-				livesCount--;
+					iterator.remove();
+					livesCount--;
 			}
 			else {
-				object.move(speed);
+				object.move(3);
 				object.render(gc);
 			}
 				
