@@ -22,7 +22,7 @@ public class GameController {
 	private List slices = new ArrayList();
 	private ObjectDecorator slicer;
 	
-		public Context getContext() {
+	public Context getContext() {
 		return context;
 	}
 
@@ -96,7 +96,7 @@ public class GameController {
 	public int comboCheck() {
 		int scoreCount = 0;
 		if(isMouseReleased()) {
-			if(getComboCounter() > 4) {
+			if(getComboCounter() >= 4) {
 			scoreCount+=getComboCounter();
 				AlertBox.display("COMBO " + getComboCounter());
 			}

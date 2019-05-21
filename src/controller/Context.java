@@ -32,4 +32,9 @@ public class Context implements GameActions{
 	public int getPhaseObjects() {
 		return gameActions.getPhaseObjects();
 	}
+
+	@Override
+	public int getSpeed() {
+		return gameActions.getSpeed();
+	}
 	}

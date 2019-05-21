@@ -47,4 +47,10 @@ public class ArcadeMode implements GameActions {
 		return 0;
 	}
 
+	@Override
+	public int getSpeed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

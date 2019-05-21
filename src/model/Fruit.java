@@ -24,8 +24,8 @@ public class Fruit implements GameObject{
 	private fruits fruitType;
 	private boolean falling = false;
 	private int locX, locY;
-	private final int maxH = 120;
-	private final double initialVel = 2.7;
+	private final int maxH = 20;
+	private double initialVel = 5;
 	private final double fallingVel = 1.5;
 	private boolean isSliced = false;
 	private BufferedImage image;
@@ -126,6 +126,7 @@ public class Fruit implements GameObject{
 	public void move(double time) {
 		if(locY > maxH && !falling) {
 			locY-=(time*initialVel);
+			initialVel-= 0.1;
 			locX += Math.random()*5;
 		}
 		else {
