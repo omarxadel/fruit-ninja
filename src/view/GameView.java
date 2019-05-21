@@ -48,7 +48,6 @@ public class GameView {
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private ImageView backgroundView;
-	private double mouseX, mouseY;
 	private List<GameObject> fruits = new ArrayList();
 	private List<GameObject> bombs = new ArrayList();
 	private List<GameObject> slices = new ArrayList();
