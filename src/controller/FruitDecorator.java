@@ -6,11 +6,17 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.File;
 import java.io.IOException;
 import model.GameObject;
 
 public class FruitDecorator extends ObjectDecorator {
-	
+	private String path = new File ("res/splatter.mp3").getAbsolutePath();
+	private Media mediafile= new Media (new File(path).toURI().toString());
+	private MediaPlayer mediaplayer= new MediaPlayer(mediafile);
 	private GameObject slicedFruit;
 	private BufferedImage [] images= new BufferedImage[2];
 	private int X1,Y1, X2,Y2;
@@ -27,30 +33,35 @@ public class FruitDecorator extends ObjectDecorator {
 			images [0]=ImageIO.read(classLoader.getResource(filename));
 			filename = "strawberry-2.png";
 			images [1]=ImageIO.read(classLoader.getResource(filename));
+			mediaplayer.play();
 		}
 		else if(this.slicedFruit.getObject().name().equalsIgnoreCase("BANANA")) {
 			filename = "banana-2.png";
 			images [0]=ImageIO.read(classLoader.getResource(filename));
 			filename = "banana-1.png";
 			images [1]=ImageIO.read(classLoader.getResource(filename));
+			mediaplayer.play();
 		}
 		else if(this.slicedFruit.getObject().name().equalsIgnoreCase("APPLE")) {
 			filename = "apple-1.png";
 			images [0]=ImageIO.read((classLoader.getResource(filename)));
 			filename = "apple-2.png";
 			images [1]=ImageIO.read(classLoader.getResource(filename));
+			mediaplayer.play();
 		}
 		else if(this.slicedFruit.getObject().name().equalsIgnoreCase("WATERMELON")) {
 			filename = "watermelon-1.png";
 			images [0]=ImageIO.read((classLoader.getResource(filename)));
 			filename = "watermelon-2.png";
 			images [1]=ImageIO.read(classLoader.getResource(filename));
+			mediaplayer.play();
 		}
 		else if(this.slicedFruit.getObject().name().equalsIgnoreCase("PEACH")) {
 			filename = "peach-1.png";
 			images [0]=ImageIO.read(classLoader.getResource(filename));
 			filename = "peach-2.png";
 			images [1]=ImageIO.read(classLoader.getResource(filename));
+			mediaplayer.play();
 		}
 	}
 	

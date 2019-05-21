@@ -9,7 +9,8 @@ public class SpecialFruit implements GameObject{
 
 	@Override
 	public Enum getObject() {
-		// TODO Auto-generated method stub
+		//lemon,
+		//orange
 		return null;
 	}
 

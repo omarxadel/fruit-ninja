@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 
+import controller.ArcadeMode;
 import controller.Command;
 import controller.Context;
 import controller.GameController;
@@ -42,26 +43,30 @@ import model.GameObject;
 
 public class GameView {
 	private MainMenu main = new MainMenu();
-	private GameController controller = new GameController();
+	private GameController controller = new GameController();     
 	private Pane root;
 	private Scene scene;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private ImageView backgroundView;
+	private ImageView gameOverView,backView;
+	private double mouseX, mouseY;
 	private List<GameObject> fruits = new ArrayList();
 	private List<GameObject> bombs = new ArrayList();
 	private List<GameObject> slices = new ArrayList();
 	private int speed = 2, minutes, seconds;
 	private Label score = new Label();
 	private Label timer = new Label();
+	private Label Dtimer = new Label();
+	private Label Combo = new Label();
 	private Label lives = new Label();
-	
+	private Button save= new Button("B");
+	private Button back2= new Button();
 	private AnimationTimer aTimer;
 	private File af;
 	private Media mf;
 	private MediaPlayer mp;
-	
-	Command command;
+	private int sec;
 	
 	
 	
@@ -81,14 +86,42 @@ public class GameView {
 		scene = new Scene(root, 750, 500);
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
-		
-		root.getChildren().addAll(backgroundView, canvas, levelsMenu());
+	
+		root.getChildren().addAll(backgroundView, canvas, levelsMenu(),Dtimer);
+		Dtimer.setVisible(false);
 		//LEVEL 1 SPEED 1000
 		//play("LEVEL1");
-		
+		saveAction();
+		gameUpdate();
+
 		return scene;
 	}
+	
+	
+	private void saveAction() {
+		save.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+			// Save in the file
+			}
+			
+		});
+		
+		back2.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+		
+				//back to main menu
+			
+			}
+			
+		});
+		
+	}
+
+	
 	private void play(String level) {
 		if(level.equalsIgnoreCase("LEVEL1")) {
 			controller.newGame(new Context(new Level1()));
@@ -99,14 +132,49 @@ public class GameView {
 		else {
 			controller.newGame(new Context(new Level3()));
 		}
-		
 		lives.setText("Remaining Lives: "+ controller.getLivesCount());
 		lives.setTextFill(Color.ANTIQUEWHITE);
 		lives.setFont(Font.font(18));
 		score.setText("Score: "+ controller.getScoreCount());
 		score.setTextFill(Color.ANTIQUEWHITE);
 		score.setFont(Font.font(18));
-		root.getChildren().addAll(score, lives);
+		root.getChildren().addAll(score, lives,back2);
+		score.setLayoutX(10);
+		score.setLayoutY(10);
+		back2.setVisible(false);
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(controller.getContext().getSpeed()), event -> {
+            for(int objects=0; objects < controller.getContext().getPhaseObjects();objects++) {
+				GameObject object = controller.createGameObject();
+				if(object instanceof Fruit && object != null)
+					fruits.add(object);
+				else if(object != null)
+					bombs.add(object);
+            }
+		}));
+		timeline.setCycleCount(500);
+		timeline.play();
+	
+		aTimer = new AnimationTimer() {
+
+			@Override
+			public void handle(long arg0) {
+				gameUpdate();
+			}	
+		};
+		aTimer.start();
+		timer();
+		
+		}
+		
+	
+
+	public void ArcadePlay() {
+		controller.newGame(new Context(new ArcadeMode()));
+		score.setText("Score: "+ controller.getScoreCount());
+		score.setTextFill(Color.ANTIQUEWHITE);
+		score.setFont(Font.font(18));
+		root.getChildren().addAll(score,back2);
+		back2.setVisible(false);
 		score.setLayoutX(10);
 		score.setLayoutY(10);
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(controller.getContext().getSpeed()), event -> {
@@ -125,17 +193,16 @@ public class GameView {
 
 			@Override
 			public void handle(long arg0) {
-				gameUpdate();
-			}
-
-		
-			
+				updateLabels();
+				gc.clearRect(0, 0, 750, 500);
+				controller.controlGameObjects(fruits, bombs, slices , scene, gc);
+			}	
 		};
 		aTimer.start();
+		ArcadeTime();
 		
-		timer();
-		
-	}	
+	}
+	
 	
 	private Pane levelsMenu() {
 		Pane home = new Pane();
@@ -181,7 +248,7 @@ public class GameView {
 		level1.setLayoutX(270);
 		level2.setLayoutX(270);
 		level3.setLayoutX(270);
-		back.setLayoutX(270);
+		back.setLayoutX(270); 
 		level1.setLayoutY(130);
 		level2.setLayoutY(200);
 		level3.setLayoutY(270);
@@ -201,8 +268,60 @@ public class GameView {
 			play("Level3");
 			home.setVisible(false);
 		});
+
+		back.setOnAction(e->{
+			ArcadePlay();
+			home.setVisible(false);
+		});
 		return home;
 	}
+	
+	
+	private void ArcadeTime() {
+		seconds = 5;
+		Timeline timecounter = new Timeline(new KeyFrame(Duration.millis(1000), event-> {
+			seconds--;
+			if(seconds>=0) {
+				controller.controlGameObjects(fruits, bombs, slices , scene, gc);
+			Dtimer.setText("00:" + seconds);
+			}
+			else {
+				BufferedImage gameOver = null;
+				BufferedImage BackB = null;
+				ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+				try {
+					 gameOver = ImageIO.read(classLoader.getResource("game-over.png"));
+					 BackB=ImageIO.read(classLoader.getResource("BACK.png"));
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+				Image image = SwingFXUtils.toFXImage(gameOver, null);
+				gameOverView = new ImageView(image);
+				Image image2 = SwingFXUtils.toFXImage(BackB, null);
+				backView = new ImageView(image2);
+				back2.setGraphic(backView);
+				root.getChildren().addAll(gameOverView);
+				gameOverView.setLayoutX(125);
+				gameOverView.setLayoutY(200);
+				gameOverView.setVisible(true);	
+				back2.setVisible(true);
+				back2.setBackground(null);
+				back2.setLayoutX(250);
+				back2.setLayoutY(300);
+				saveAction();
+			}
+				
+		}));
+		timecounter.setCycleCount(500);
+		timecounter.play();
+		Dtimer.setFont(Font.font(18));
+		Dtimer.setTextFill(Color.ANTIQUEWHITE);
+		Dtimer.setVisible(true);
+		Dtimer.setLayoutX(600);
+		lives.setVisible(false);
+	}
+	
 	
 	private void timer() {
 		minutes = 0;
@@ -224,21 +343,51 @@ public class GameView {
 		timer.setLayoutY(10);
 	}	
 	
+	private String path = new File ("res/over.mp3").getAbsolutePath();
+		private Media mediafile= new Media (new File(path).toURI().toString());
+		private MediaPlayer mediaplayer= new MediaPlayer(mediafile);
+		
 	private void gameUpdate() {
-		updateLabels();
+	updateLabels();
 		gc.clearRect(0, 0, 750, 500);
-		if(controller.getLivesCount() == 0) {
-			// TODO lose game
-		}
+		if(controller.getLivesCount()!=0) {
 		controller.controlGameObjects(fruits, bombs, slices , scene, gc);
+		mediaplayer.play();
+		save.setVisible(true);
+		}
+		else if(controller.getLivesCount() == 0) {
+			BufferedImage gameOver = null;
+			BufferedImage BackB = null;
+			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+			try {
+				 gameOver = ImageIO.read(classLoader.getResource("game-over.png"));
+				 BackB=ImageIO.read(classLoader.getResource("BACK.png"));
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			Image image = SwingFXUtils.toFXImage(gameOver, null);
+			gameOverView = new ImageView(image);
+			Image image2 = SwingFXUtils.toFXImage(BackB, null);
+			backView = new ImageView(image2);
+			back2.setGraphic(backView);
+			root.getChildren().addAll(gameOverView);
+			gameOverView.setLayoutX(125);
+			gameOverView.setLayoutY(200);
+			gameOverView.setVisible(true);	
+			back2.setVisible(true);
+			back2.setBackground(null);
+			back2.setLayoutX(250);
+			back2.setLayoutY(300);
+			saveAction();
+		}
 	}
-
 	
-
 	
 	private void updateLabels() {
 		lives.setText("Remaining Lives: "+controller.getLivesCount());
 		score.setText("Score: "+ controller.getScoreCount());
+		score.setLayoutY(40);
 	}
-
+	
 }

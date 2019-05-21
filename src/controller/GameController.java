@@ -83,7 +83,7 @@ public class GameController {
 	}
 
 	public void comboCount() {
-		comboCounter ++;		
+		comboCounter ++;		 
 	}
 	
 	public int getComboCounter() {
@@ -98,7 +98,8 @@ public class GameController {
 		if(isMouseReleased()) {
 			if(getComboCounter() >= 4) {
 			scoreCount+=getComboCounter();
-				AlertBox.display("COMBO " + getComboCounter());
+			//	AlertBox.display("COMBO " + getComboCounter());
+			
 			}
 			resetCombo();
 			}
@@ -119,10 +120,9 @@ public class GameController {
 				try {
 					showSlices(object, gc);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(!isMouseReleased()) {
+				if(!isMouseReleased() ) {
 					comboCount();
 				}			
 				iterator.remove();
@@ -130,20 +130,25 @@ public class GameController {
 			}
 			else if(object.hasMovedOffScreen()){
 				iterator.remove();
+				if(getLivesCount()>0) {
 				setLivesCount(getLivesCount() - 1);
+				}
 			}
 			else {
 				object.move(3);
 				object.render(gc);
-			}		
+			}
+			
 	}
 		iterator = bombs.iterator();
 		while(iterator.hasNext()) {
 			GameObject object = iterator.next();
 			if(mouseIntersects(object)) {
 				iterator.remove();
-				setLivesCount(getLivesCount() - 1);
-			}
+				if(getLivesCount()>0) {
+					setLivesCount(getLivesCount() - 1);
+					}
+				}
 			else if(object.hasMovedOffScreen()){
 					iterator.remove();
 			}
