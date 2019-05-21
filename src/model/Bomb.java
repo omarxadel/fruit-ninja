@@ -19,10 +19,9 @@ public class Bomb implements GameObject{
 		}
 	
 	private bombs bombType;
-	private int holder = 100000;
 	private int locX, locY;
-	private final int maxH = 120;
-	private final double initialVel = 2.7;
+	private final int maxH = 20;
+	private double initialVel = 5;
 	private final double fallingVel = 1.5;
 	private boolean isSliced = false;
 	private BufferedImage image;
@@ -113,10 +112,13 @@ public class Bomb implements GameObject{
 	public void move(double time) {
 		if(locY > maxH && !falling) {
 			locY-=(time*initialVel);
+			initialVel-= 0.1;
+			locX += Math.random()*5;
 		}
 		else {
 			falling = true;
 			locY+=(time*fallingVel);
+			locX += Math.random()*5;
 		}
 	}
 

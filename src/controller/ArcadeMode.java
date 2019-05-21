@@ -66,7 +66,15 @@ public class ArcadeMode implements GameActions {
 			return phaseObject;
 		}
 
+
 		public int getTimeline() {
 			return timeline;
 		}
+
+	@Override
+	public int getSpeed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

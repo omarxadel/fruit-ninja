@@ -13,6 +13,8 @@ import controller.Command;
 import controller.Context;
 import controller.GameController;
 import controller.Level1;
+import controller.Level2;
+import controller.Level3;
 import controller.ObjectFactory;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -83,12 +85,16 @@ public class GameView {
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
 		save.setLayoutX(500);
+	
 		
-		root.getChildren().addAll(backgroundView, canvas,save,back);
+
+		root.getChildren().addAll(backgroundView, canvas, levelsMenu(),save,back);
 		back.setVisible(false);
-		play(1000);
+		//LEVEL 1 SPEED 1000
+		//play("LEVEL1");
 		saveAction();
 		gameUpdate();
+
 		return scene;
 	}
 	
@@ -113,8 +119,17 @@ public class GameView {
 		
 	}
 
-	private void play(int speed) {
-		controller.newGame(new Context(new Level1()));
+	private void play(String level) {
+		if(level.equalsIgnoreCase("LEVEL1")) {
+			controller.newGame(new Context(new Level1()));
+		}
+		else if(level.equalsIgnoreCase("LEVEL2")) {
+			controller.newGame(new Context(new Level2()));
+		}
+		else {
+			controller.newGame(new Context(new Level3()));
+		}
+		
 		lives.setText("Remaining Lives: "+ controller.getLivesCount());
 		lives.setTextFill(Color.ANTIQUEWHITE);
 		lives.setFont(Font.font(18));
@@ -124,7 +139,7 @@ public class GameView {
 		root.getChildren().addAll(score, lives);
 		score.setLayoutX(10);
 		score.setLayoutY(10);
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(speed), event -> {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(controller.getContext().getSpeed()), event -> {
             for(int objects=0; objects < controller.getContext().getPhaseObjects();objects++) {
 				GameObject object = controller.createGameObject();
 				if(object instanceof Fruit && object != null)
@@ -154,6 +169,73 @@ public class GameView {
 		
 		
 	}	
+	
+	private Pane levelsMenu() {
+		Pane home = new Pane();
+		Button level1 = new Button();
+		Button level2 = new Button();
+		Button level3 = new Button();
+		Button arcade = new Button();
+		Button back = new Button();
+		BufferedImage i1,i2,i3,a1,b1;
+		ImageView l1,l2,l3,ar,b;
+		Image l1i,l2i,l3i,ari,bi;
+		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+		try {
+			i1 = ImageIO.read(classLoader.getResource("LEVEL1.png"));
+			l1i = SwingFXUtils.toFXImage(i1, null);
+			l1 = new ImageView(l1i);
+			level1.setGraphic(l1);
+			level1.setBackground(null);
+			
+			i2 = ImageIO.read(classLoader.getResource("LEVEL2.png"));
+			l2i = SwingFXUtils.toFXImage(i2, null);
+			l2 = new ImageView(l2i);
+			level2.setGraphic(l2);
+			level2.setBackground(null);
+			
+			i3 = ImageIO.read(classLoader.getResource("LEVEL3.png"));
+			l3i = SwingFXUtils.toFXImage(i3, null);
+			l3 = new ImageView(l3i);
+			level3.setGraphic(l3);
+			level3.setBackground(null);
+			
+			b1 = ImageIO.read(classLoader.getResource("BACK.png"));
+			bi = SwingFXUtils.toFXImage(b1, null);
+			b = new ImageView(bi);
+			back.setGraphic(b);
+			back.setBackground(null);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		home.getChildren().addAll(level1,level2,level3,back);
+		level1.setLayoutX(270);
+		level2.setLayoutX(270);
+		level3.setLayoutX(270);
+		back.setLayoutX(270);
+		level1.setLayoutY(130);
+		level2.setLayoutY(200);
+		level3.setLayoutY(270);
+		back.setLayoutY(340);
+		
+		level1.setOnAction(e->{
+			play("Level1");
+			home.setVisible(false);
+		});
+		
+		level2.setOnAction(e->{
+			play("Level2");
+			home.setVisible(false);
+		});
+		
+		level3.setOnAction(e->{
+			play("Level3");
+			home.setVisible(false);
+		});
+		return home;
+	}
 	
 	private void timer() {
 		minutes = 0;
