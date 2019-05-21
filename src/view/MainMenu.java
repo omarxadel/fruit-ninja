@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class MainMenu {
 	private Pane root = new Pane();
@@ -72,18 +75,39 @@ public class MainMenu {
 		newGameB.setLayoutX(20);
 		newGameB.setLayoutY(250);
 		newGameB.setBackground(null);
+		Duration duration = Duration.millis(2500);
+		RotateTransition rotateTransition = new RotateTransition(duration, newGameB);
+		rotateTransition.setByAngle(360);
+		rotateTransition.setCycleCount(Animation.INDEFINITE);
+	    rotateTransition.play();
+		
+		
 		Image arcadeG = SwingFXUtils.toFXImage(arcadeGame, null);
 		arcadeGameview = new ImageView(arcadeG);
 		arcade.setGraphic(arcadeGameview);
 		arcade.setLayoutX(300);
 		arcade.setLayoutY(250);
 		arcade.setBackground(null);
+		Duration duration2 = Duration.millis(2500);
+		RotateTransition rotateTransition2 = new RotateTransition(duration2, arcade);
+		rotateTransition2.setByAngle(360);
+		rotateTransition2.setCycleCount(Animation.INDEFINITE);
+	    rotateTransition2.play();
+		
+		
 		Image quitG = SwingFXUtils.toFXImage(quitGame, null);
 		quitGameView = new ImageView(quitG);
 		Quit.setGraphic(quitGameView);
 		Quit.setLayoutX(530);
 		Quit.setLayoutY(270);
 		Quit.setBackground(null);
+		Duration duration3 = Duration.millis(2500);
+		RotateTransition rotateTransition3 = new RotateTransition(duration3, Quit);
+		rotateTransition3.setByAngle(360);
+		rotateTransition3.setCycleCount(Animation.INDEFINITE);
+	    rotateTransition3.play();
+		
+		
 		Image soundG = SwingFXUtils.toFXImage(soundGame, null);
 		soundGameView = new ImageView(soundG);
 		soundGameView.setFitWidth(40);

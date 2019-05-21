@@ -130,7 +130,9 @@ public class GameController {
 			}
 			else if(object.hasMovedOffScreen()){
 				iterator.remove();
+				if(getLivesCount()>0) {
 				setLivesCount(getLivesCount() - 1);
+				}
 			}
 			else {
 				object.move(3);
@@ -142,8 +144,10 @@ public class GameController {
 			GameObject object = iterator.next();
 			if(mouseIntersects(object)) {
 				iterator.remove();
-				setLivesCount(getLivesCount() - 1);
-			}
+				if(getLivesCount()>0) {
+					setLivesCount(getLivesCount() - 1);
+					}
+				}
 			else if(object.hasMovedOffScreen()){
 					iterator.remove();
 			}

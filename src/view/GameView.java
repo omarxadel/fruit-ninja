@@ -40,12 +40,13 @@ import model.GameObject;
 
 public class GameView {
 	private MainMenu main = new MainMenu();
-	private GameController controller = new GameController();
+	private GameController controller = new GameController();     
 	private Pane root;
 	private Scene scene;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private ImageView backgroundView;
+	private ImageView gameOverView;
 	private double mouseX, mouseY;
 	private List<GameObject> fruits = new ArrayList();
 	private List<GameObject> bombs = new ArrayList();
@@ -54,7 +55,8 @@ public class GameView {
 	private Label score = new Label();
 	private Label timer = new Label();
 	private Label lives = new Label();
-	
+	private Button save= new Button();
+	private Button back= new Button("back");
 	private AnimationTimer aTimer;
 	private File af;
 	private Media mf;
@@ -80,12 +82,35 @@ public class GameView {
 		scene = new Scene(root, 750, 500);
 		canvas = new Canvas(750, 500);
 		gc = canvas.getGraphicsContext2D();
+		save.setLayoutX(500);
 		
-		root.getChildren().addAll(backgroundView, canvas);
-		
+		root.getChildren().addAll(backgroundView, canvas,save,back);
+		back.setVisible(false);
 		play(1000);
-		
+		saveAction();
+		gameUpdate();
 		return scene;
+	}
+	
+	private void saveAction() {
+		save.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+			// Save in the file
+			}
+			
+		});
+		
+		back.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+			//back to MainMenu
+			}
+			
+		});
+		
 	}
 
 	private void play(int speed) {
@@ -125,6 +150,9 @@ public class GameView {
 		
 		timer();
 		
+		
+		
+		
 	}	
 	
 	private void timer() {
@@ -150,10 +178,29 @@ public class GameView {
 	private void gameUpdate() {
 		updateLabels();
 		gc.clearRect(0, 0, 750, 500);
-		if(controller.getLivesCount() == 0) {
-			// TODO lose game
-		}
+		if(controller.getLivesCount()!=0)
 		controller.controlGameObjects(fruits, bombs, slices , scene, gc);
+		else if(controller.getLivesCount() == 0) {
+			BufferedImage gameOver = null;
+			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+			try {
+				 gameOver = ImageIO.read(classLoader.getResource("game-over.png"));
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			back.setLayoutX(100);
+			back.setLayoutY(100);
+			Image image = SwingFXUtils.toFXImage(gameOver, null);
+			gameOverView = new ImageView(image);
+			root.getChildren().addAll(gameOverView);
+			gameOverView.setLayoutX(125);
+			gameOverView.setLayoutY(200);
+			gameOverView.setVisible(true);	
+			back.setVisible(true);
+			
+		}
+		
 	}
 
 	
@@ -163,5 +210,6 @@ public class GameView {
 		lives.setText("Remaining Lives: "+controller.getLivesCount());
 		score.setText("Score: "+ controller.getScoreCount());
 	}
+	
 
 }
