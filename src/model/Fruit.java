@@ -10,9 +10,14 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Fruit implements GameObject{
-
+	private String path = new File ("res/throw.mp3").getAbsolutePath();
+	private Media mediafile= new Media (new File(path).toURI().toString());
+	private MediaPlayer mediaplayer= new MediaPlayer(mediafile);
+	
 	private enum fruits{
 		Strawberry,
 		Banana,
@@ -41,22 +46,27 @@ public class Fruit implements GameObject{
 		
 		switch(type) {
 		case 1:
+			mediaplayer.play();
 			fruitType = fruits.Strawberry;
 			filename = "strawberry.png";
 			break;
 		case 2:
+			mediaplayer.play();
 			fruitType = fruits.Banana;
 			filename = "banana.png";
 			break;
 		case 3:
+			mediaplayer.play();
 			fruitType = fruits.Apple;
 			filename = "apple.png";
 			break;
 		case 4:
+			mediaplayer.play();
 			fruitType = fruits.Peach;
 			filename = "peach.png";
 			break;
 		case 5:
+			mediaplayer.play();
 			fruitType = fruits.Watermelon;
 			filename = "watermelon.png";
 			break;

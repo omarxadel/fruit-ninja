@@ -83,7 +83,7 @@ public class GameController {
 	}
 
 	public void comboCount() {
-		comboCounter ++;		
+		comboCounter ++;		 
 	}
 	
 	public int getComboCounter() {
@@ -98,7 +98,8 @@ public class GameController {
 		if(isMouseReleased()) {
 			if(getComboCounter() >= 4) {
 			scoreCount+=getComboCounter();
-				AlertBox.display("COMBO " + getComboCounter());
+			//	AlertBox.display("COMBO " + getComboCounter());
+			
 			}
 			resetCombo();
 			}
@@ -119,10 +120,9 @@ public class GameController {
 				try {
 					showSlices(object, gc);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(!isMouseReleased()) {
+				if(!isMouseReleased() ) {
 					comboCount();
 				}			
 				iterator.remove();
@@ -137,7 +137,8 @@ public class GameController {
 			else {
 				object.move(3);
 				object.render(gc);
-			}		
+			}
+			
 	}
 		iterator = bombs.iterator();
 		while(iterator.hasNext()) {

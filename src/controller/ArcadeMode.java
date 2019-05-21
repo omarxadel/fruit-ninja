@@ -17,15 +17,13 @@ public class ArcadeMode implements GameActions {
     	case 1 : 
     		return factory.getObject("APPLE");
     	case 2 :
-    		return factory.getObject("BANANA");
+    		return factory.getObject("BANANA"); 
     	case 3 :
     		return factory.getObject("STRAWBERRY");
     	case 4 :
     		return factory.getObject("WATERMELON");
     	case 5 : 
     		return factory.getObject("PEACH");
-    	case 6:
-    		return factory.getObject("FATALBOMB");
     	default:
     		return null;
     	}
@@ -73,8 +71,7 @@ public class ArcadeMode implements GameActions {
 
 	@Override
 	public int getSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return timeline;
 	}
 
 }

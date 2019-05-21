@@ -48,12 +48,6 @@ public class MainMenu {
 			e.printStackTrace();
 		}
 		
-		
-		/*File af=new File("C:\\Users\\zzz\\Desktop\\Fruit-Ninja-Theme-Song.mp3");
-		Media mf=new Media(af.toURI().toString());
-		MediaPlayer mp=new MediaPlayer(mf);
-		mp.setAutoPlay(true);
-		mp.setVolume(0.3);*/
 
 		Image image1 = SwingFXUtils.toFXImage(homeMask, null);
 		maskView = new ImageView(image1);
@@ -139,6 +133,7 @@ public class MainMenu {
 			}
 			
 		});
+	
 		}
 	
 	public Pane mainMenu() {
