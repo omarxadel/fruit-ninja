@@ -8,11 +8,17 @@ import javax.imageio.ImageIO;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class MainMenu {
 	private Pane root = new Pane();
@@ -20,8 +26,11 @@ public class MainMenu {
 	private Button newGameB = new Button();
 	private Button Quit = new Button();
 	private Button arcade = new Button();
-	private ImageView newGameView,maskView,logoView,ninjaView,deskView,arcadeGameview,quitGameView,soundGameView;
-	
+	private ImageView newGameView,maskView,logoView,ninjaView,deskView,arcadeGameView,quitGameView,soundGameView,backgroundView;
+	private Scene scene,gameViewScene;
+	private GameView view;
+	private Stage window,stage;
+	 
 	public MainMenu() {
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		BufferedImage homeMask = null;
@@ -32,6 +41,7 @@ public class MainMenu {
 		BufferedImage quitGame = null;
 		BufferedImage arcadeGame = null;
 		BufferedImage soundGame = null;
+		BufferedImage background = null;
 		try {
 			homeMask= ImageIO.read(classLoader.getResource("home-mask.png"));
 			logo= ImageIO.read(classLoader.getResource("logo.png"));
@@ -41,6 +51,7 @@ public class MainMenu {
 			quitGame = ImageIO.read(classLoader.getResource("quit.png"));
 			arcadeGame = ImageIO.read(classLoader.getResource("arcade.png"));
 			soundGame=ImageIO.read(classLoader.getResource("Sound-on-icon.png"));
+			background = ImageIO.read(classLoader.getResource("background.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,8 +84,8 @@ public class MainMenu {
 		newGameB.setLayoutY(250);
 		newGameB.setBackground(null);
 		Image arcadeG = SwingFXUtils.toFXImage(arcadeGame, null);
-		arcadeGameview = new ImageView(arcadeG);
-		arcade.setGraphic(arcadeGameview);
+		arcadeGameView = new ImageView(arcadeG);
+		arcade.setGraphic(arcadeGameView);
 		arcade.setLayoutX(300);
 		arcade.setLayoutY(250);
 		arcade.setBackground(null);
@@ -92,6 +103,8 @@ public class MainMenu {
 		sound.setLayoutX(680);
 		sound.setLayoutY(30);
 		sound.setBackground(null);
+		Image image = SwingFXUtils.toFXImage(background, null);
+		backgroundView = new ImageView(image);
 	 }
 	
 	private void showMenu() {
@@ -101,6 +114,7 @@ public class MainMenu {
 	private void hideMenu() {
 		root.setVisible(false);
 	}
+
 	
 	private void setButtonsActions() {
 		Quit.setOnMouseDragged(e-> {
@@ -113,13 +127,29 @@ public class MainMenu {
 			public void handle(ActionEvent event) {
 		
 			}
-			
 		});
+
+		newGameB.setOnMouseDragged(e-> {
+		       });
+
 		}
-	
-	public Pane mainMenu() {
+
+		private void handleButtonAction(ActionEvent event) {
+			try {
+				view=new GameView();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("new-game.png"));
+				Stage stage = (Stage) newGameB.getScene().getWindow();
+				Scene scene = new Scene(loader.load());
+				stage.setScene(view.start());
+			}catch (IOException io){
+				io.printStackTrace();
+			}
+		}
+
+	public Scene mainMenu() {
 		setButtonsActions();
-		root.getChildren().addAll(newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit,sound);
-		return root;
+		root.getChildren().addAll(backgroundView,newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit,sound);
+		scene = new Scene(root, 750, 500);
+		return scene;
 	}
 }

@@ -5,15 +5,16 @@ import javafx.stage.Stage;
 import view.GameView;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import view.MainMenu;
 
 
 public class Main extends Application {
-	private GameView view;
+	private MainMenu view;
 	
 	@Override
 	public void start(Stage primaryStage) {
-			view = new GameView();
-			primaryStage.setScene(view.start());
+			view = new MainMenu();
+			primaryStage.setScene(view.mainMenu());
 			primaryStage.show();		
 	}
 	
