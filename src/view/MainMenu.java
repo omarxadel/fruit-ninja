@@ -151,19 +151,7 @@ public class MainMenu {
 		       });
 
 		}
-
-		private void handleButtonAction(ActionEvent event) {
-			try {
-				view=new GameView();
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("new-game.png"));
-				Stage stage = (Stage) newGameB.getScene().getWindow();
-				Scene scene = new Scene(loader.load());
-				stage.setScene(view.start());
-			}catch (IOException io){
-				io.printStackTrace();
-			}
-		}
-
+		
 	public Scene mainMenu() {
 		setButtonsActions();
 		root.getChildren().addAll(backgroundView,newGameB,maskView,logoView,ninjaView,deskView,arcade,Quit,sound);
