@@ -1,5 +1,7 @@
 package application;
 	
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.GameView;
@@ -19,6 +21,8 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
+		launch(args);	
+
+	}	
 	}
-}
+

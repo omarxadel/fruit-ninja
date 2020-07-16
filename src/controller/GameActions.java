@@ -10,4 +10,5 @@ public interface GameActions {
 	public void loadGame ();
 	public void ResetGame ();
 	public int getPhaseObjects ();
+	public int getSpeed();
 }
